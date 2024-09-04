@@ -8,7 +8,7 @@ typedef struct details{
     char balance[10];
 }details;
 int main(){
-    FILE *f = fopen("E:\\c_files_banking\\details.txt","r");
+    FILE *f = fopen(".\\details.txt","r");
     if(f==NULL){
         printf("error");
     }
