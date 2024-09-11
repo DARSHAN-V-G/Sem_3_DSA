@@ -41,7 +41,7 @@ void sort(int *arr){
     switch(c){
     case 1:
     for(int i=0;i<size;i++){
-        for(int j=i;j<size-i-1;j++){
+        for(int j=0;j<size-i-1;j++){
             if(arr[j]>arr[j+1]){
                 swap=arr[j];
                 arr[j]=arr[j+1];
@@ -53,7 +53,7 @@ void sort(int *arr){
     break;
     case 2:
         for(int i=0;i<size;i++){
-        for(int j=i;j<size-i-1;j++){
+        for(int j=0;j<size-i-1;j++){
             if(arr[j]<arr[j+1]){
                 swap=arr[j];
                 arr[j]=arr[j+1];
@@ -82,24 +82,28 @@ void update(int *arr,int pos,int item){
     arr[pos]=item;
 }
 
-void split(int *arr1,int *arr2,int size2){
+int* split(int *arr1,int size2){
     int i;
+    int *arr2 = (int*)malloc(sizeof(int)*(size-size2));
     for(i=0;i<size2;i++){
         printf("%d ",arr1[i]);
     }
     printf("\n");
     for(int j=i;j<size;j++){
         arr2[j-i]=arr1[j];
-        printf("%d ",arr1[j]);
+        printf("%d ",arr2[j-i]);
     }
     size=size2;
+    return arr2;
 }
 
 void merge(int *arr1,int *arr2,int size2){
     for(int i=0;i<size2;i++){
         arr1[size+i]=arr2[i];
     }
+
     size+=size2;
+    printf("\n");
 }
 
 void exchange(int *arr,int p1,int p2){
@@ -145,14 +149,17 @@ int main()
     int *arr1;
 
     int *arr3=NULL;
+
+    int size3=0;
     int choice;
     menu:
     printf("\n\nUSER MENU\n\n0.Initialize an array\n1.Deleting\n2.Inserting\n3.Sorting\n4.Searching\n5.Updating\n6.Exchanging of array\n7.Merging of array\n8.Splitting of array\n9.Rotating of array\n10.Traversing\n11.Displaying\n12.Copying of elements\n13.Exit\n");
     printf("\nEnter your choice : ");
+    -  0
     scanf("%d",&choice);
     int size2,item,pos;
     int *arr2;
-    int size3=0;
+    int h=0;
     switch(choice){
     case 0:
         printf("Enter size of array : ");
@@ -203,8 +210,10 @@ int main()
         break;
     case 7:
         if(arr3!=NULL){
-            merge(arr1,arr3,size3);
-        }
+    printf("%d",size3);
+        arr1=realloc(arr1,(sizeof(int)*(size+size3)));
+        merge(arr1,arr3,size3);
+        }else{
         printf("Enter size of array 2 : ");
         scanf("%d",&size2);
         arr2=(int*)malloc(sizeof(int)*size2);
@@ -213,17 +222,18 @@ int main()
             scanf("%d",&arr2[k]);
         }
         arr1=realloc(arr1,(sizeof(int)*(size+size2)));
-        merge(arr1,arr2,size2);
+        merge(arr1,arr2,size2);                                                                                                                                                                                                                                                                                      
+        }
+        free(arr3);
+        arr3=NULL;
         print(arr1);
-
         break;
     case 8:
         printf("Enter the splitting position : ");
         scanf("%d",&item);
-        arr3=(int*)malloc(sizeof(int)*(size-item));
-        split(arr1,arr3,item);
         size3=size-item;
-        print(arr3);
+        arr3=(int*)malloc(sizeof(int)*(size-item));
+        arr3 = split(arr1,item);
         break;
     case 9:
         printf("Enter the number of rotation : ");
@@ -243,6 +253,8 @@ int main()
         printf("Elements Copied : ");
         print(arr1);
         break;
+    case 13:
+        return 0;
     default:
         printf("Invalid choice.");
     }
